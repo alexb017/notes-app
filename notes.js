@@ -17,7 +17,8 @@ export default class Note {
 
   addNote(category, content, timeAgo) {
     const notes = this.getAllNotes();
-    console.log(typeof notes);
+    // console.log(typeof notes);
+
     const note = {
       category,
       content,

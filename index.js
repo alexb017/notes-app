@@ -1,23 +1,39 @@
 import Notes from './notes.js';
-import { toggleNoteModalSettings } from './helpers.js';
+import {
+  toggleNoteModalSettings,
+  toggleModalNote,
+  toggleDarkMode,
+} from './helpers.js';
+
+const form = document.querySelector('#add-note');
+const category = document.querySelector('#note-category');
+const content = document.querySelector('#write-note');
+const timeAgo = 'a while ago';
 
 const notesList = document.querySelector('#notes-list');
+
+// render all the notes
 const renderNotes = (items) => {
+  notesList.innerHTML = '';
+  // loop through every note
   items.forEach((item) => {
+    // create element
     const div = document.createElement('div');
     div.setAttribute('class', 'note-box-content');
     div.innerHTML = `
             <div class="note-stuff">
                 <span class="note-category">${item.category}</span>
-                <div id="btn-note-settings" class="btn-note-settings">
-                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 14C16.8954 14 16 13.1046 16 12C16 10.8954 16.8954 10 18 10C19.1046 10 20 10.8954 20 12C20 12.5304 19.7893 13.0391 19.4142 13.4142C19.0391 13.7893 18.5304 14 18 14ZM12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14ZM6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12C8 12.5304 7.78929 13.0391 7.41421 13.4142C7.03914 13.7893 6.53043 14 6 14Z"></path>
-                    </svg>
-                    <div id="note-modal-settings" class="note-modal-settings">
+                <div class="btn-note-settings">
+                    <button class="btn-settings">
+                        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 14C16.8954 14 16 13.1046 16 12C16 10.8954 16.8954 10 18 10C19.1046 10 20 10.8954 20 12C20 12.5304 19.7893 13.0391 19.4142 13.4142C19.0391 13.7893 18.5304 14 18 14ZM12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14ZM6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12C8 12.5304 7.78929 13.0391 7.41421 13.4142C7.03914 13.7893 6.53043 14 6 14Z"></path>
+                        </svg>
+                    </button>
+                    <div class="note-modal-settings">
                         <div class="style-settings">
                             <p class="p">style</p>
-                            <div class="paragraph style-bg">Paragraph</div>
-                            <div class="heading-h1 style-bg">
+                            <button class="paragraph style-bg">Paragraph</button>
+                            <button class="heading-h1 style-bg">
                                 <svg
                                     width="24"
                                     height="24"
@@ -34,8 +50,8 @@ const renderNotes = (items) => {
                                     ></path>
                                 </svg>
                                 <span class="heading-h1-text">Heading h1</span>
-                            </div>
-                            <div class="bold style-bg">
+                            </button>
+                            <button class="bold style-bg">
                                 <svg
                                     width="24"
                                     height="24"
@@ -47,8 +63,8 @@ const renderNotes = (items) => {
                                     ></path>
                                 </svg>
                                 <span class="bold-text">Bold</span>
-                            </div>
-                            <div class="italic style-bg">
+                            </button>
+                            <button class="italic style-bg">
                                 <svg
                                 width="24"
                                 height="24"
@@ -60,22 +76,22 @@ const renderNotes = (items) => {
                                 ></path>
                                 </svg>
                                 <span class="italic-text">Italic</span>
-                            </div>
+                            </button>
                         </div>
                         <div class="more-settings">
                             <p class="p">more stuff</p>
-                            <div id="btn-note-update" class="btn-note-update">
+                            <button class="btn-note-update">
                                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 4H8V6.55709C9.19001 5.622 10.6906 5.0643 12.3214 5.0643C16.1874 5.0643 19.3214 8.19831 19.3214 12.0643C19.3214 15.9303 16.1874 19.0643 12.3214 19.0643C10.171 19.0643 8.24696 18.0946 6.96289 16.5685L8.58221 15.3837C9.49811 16.4147 10.8339 17.0643 12.3214 17.0643C15.0829 17.0643 17.3214 14.8257 17.3214 12.0643C17.3214 9.30288 15.0829 7.0643 12.3214 7.0643C11.2346 7.0643 10.2288 7.41107 9.4085 8L12 8V10H6V4Z"></path>
                                 </svg>
                                 <span>Update</span>
-                            </div>
-                            <div id="btn-note-remove" class="btn-note-remove">
+                            </button>
+                            <button class="btn-note-remove">
                                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17 22H7C5.89543 22 5 21.1046 5 20V7H3V5H7V4C7 2.89543 7.89543 2 9 2H15C16.1046 2 17 2.89543 17 4V5H21V7H19V20C19 21.1046 18.1046 22 17 22ZM7 7V20H17V7H7ZM9 4V5H15V4H9Z"></path>
                                 </svg>
                                 <span>Remove</span>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -84,11 +100,40 @@ const renderNotes = (items) => {
             <p class="note-timeago">${item.timeAgo}</p>
         `;
 
+    // add div to the html
     notesList.appendChild(div);
   });
 };
 
 const notes = new Notes();
+
+// render on page load
+try {
+  renderNotes(notes.getAllNotes());
+} catch (error) {
+  console.log(error);
+}
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  try {
+    notes.addNote(category.value, content.value, timeAgo);
+    renderNotes(notes.getAllNotes());
+    console.log('great');
+  } catch (error) {
+    console.error(error);
+  }
+
+  resetFields();
+  toggleModalNote();
+});
+
+const resetFields = () => {
+  category.value = '';
+  content.value = '';
+  // timeAgo = '';
+};
+
 // notes.addNote(
 //   'exam',
 //   `Adding some data to localStorage is as easy as using the setItem() method. I'll use a generic key and value for the names, but they can be any strings.`,
@@ -118,9 +163,19 @@ const notes = new Notes();
 // localStorage.removeItem('notes');
 // console.log(notes.getAllNotes());
 
-renderNotes(notes.getAllNotes());
-
-const btnNoteSettings = document.querySelectorAll('#btn-note-settings');
+// add event to every btn
+const btnNoteSettings = document.querySelectorAll('.btn-settings');
 btnNoteSettings.forEach((btn) => {
   btn.addEventListener('click', toggleNoteModalSettings);
 });
+
+const btnAddNote = document.querySelector('#create-note');
+btnAddNote.addEventListener('click', toggleModalNote);
+
+const closeAddNote = document.querySelector('#btn-cancel');
+closeAddNote.addEventListener('click', () => {
+  toggleModalNote();
+});
+
+const btnDarkMode = document.querySelector('#btn-dark-mode');
+btnDarkMode.addEventListener('click', toggleDarkMode);
