@@ -28,4 +28,8 @@ export default class Note {
     notes.push(note);
     localStorage.setItem('notes', JSON.stringify(notes));
   }
+
+  updateNote(note, newNote) {}
+
+  removeNote(note) {}
 }

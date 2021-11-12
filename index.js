@@ -119,7 +119,6 @@ form.addEventListener('submit', (event) => {
   try {
     notes.addNote(category.value, content.value, timeAgo);
     renderNotes(notes.getAllNotes());
-    console.log('great');
   } catch (error) {
     console.error(error);
   }
@@ -131,37 +130,7 @@ form.addEventListener('submit', (event) => {
 const resetFields = () => {
   category.value = '';
   content.value = '';
-  // timeAgo = '';
 };
-
-// notes.addNote(
-//   'exam',
-//   `Adding some data to localStorage is as easy as using the setItem() method. I'll use a generic key and value for the names, but they can be any strings.`,
-//   '1hr ago'
-// );
-// notes.addNote(
-//   'personal',
-//   `If you want to get the value for a particular key, you'll use the getItem() method`,
-//   'November 3 2021'
-// );
-// notes.addNote(
-//   'work',
-//   `Finally, you can remove the data with removeItem().`,
-//   'November 2 2021'
-// );
-// notes.addNote(
-//   'exam',
-//   `Using clear() will clear all local storage.`,
-//   'November 1 2021'
-// );
-// notes.addNote(
-//   'hobby',
-//   `I like making tutorials where you build a small application completely from scratch with plain JavaScript. A to-do list is a common app idea, but without having a database to store the to-dos, it's not particularly useful, and that adds a bit of complexity beyond beginner territory.`,
-//   'Novermber 1 2021'
-// );
-// console.log(notes.getAllNotes());
-// localStorage.removeItem('notes');
-// console.log(notes.getAllNotes());
 
 // add event to every btn
 const btnNoteSettings = document.querySelectorAll('.btn-settings');
