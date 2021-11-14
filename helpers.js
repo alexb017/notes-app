@@ -21,9 +21,17 @@ export const toggleNoteModalSettings = (event) => {
 export const closeDropdown = (event) => {};
 
 export const toggleDarkMode = (event) => {
-  // add class to button
+  // for button
   event.currentTarget.classList.toggle('active-dark-mode');
-  // document.querySelector('.navbar').classList.toggle('active');
+
+  // for modal note
+  document.querySelector('.modal-add-note').classList.toggle('active');
+
+  // for box notes
+  document.querySelectorAll('.note-box-content').forEach((item) => {
+    item.classList.toggle('active');
+  });
+
   // add class to html
   document.documentElement.classList.toggle('dark');
 };

@@ -32,7 +32,7 @@ const renderNotes = (items) => {
                     <div class="note-modal-settings">
                         <div class="style-settings">
                             <p class="p">style</p>
-                            <button class="paragraph style-bg">Paragraph</button>
+                            <button class="paragraph style-bg">Default</button>
                             <button class="heading-h1 style-bg">
                                 <svg
                                     width="24"
