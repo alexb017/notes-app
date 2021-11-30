@@ -8,21 +8,19 @@ import {
 const form = document.querySelector('#add-note');
 const category = document.querySelector('#note-category');
 const content = document.querySelector('#write-note');
-const timeAgo = 'a while ago';
+const status = 'a while ago';
 
 const notesList = document.querySelector('#notes-list');
 
-// render all the notes
 const renderNotes = (items) => {
   notesList.innerHTML = '';
-  // loop through every note
+
   items.forEach((item) => {
-    // create element
     const div = document.createElement('div');
     div.setAttribute('class', 'note-box-content');
     div.innerHTML = `
             <div class="note-stuff">
-                <span class="note-category">${item.category}</span>
+                <span class="note-category"><strong>${item.category}</strong></span>
                 <div class="btn-note-settings">
                     <button class="btn-settings">
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -96,11 +94,11 @@ const renderNotes = (items) => {
                     </div>
                 </div>
             </div>
-            <p class="note-content">${item.content}</p>
-            <p class="note-timeago">${item.timeAgo}</p>
+            <p class="note-content" contenteditable="true">${item.content}</p>
+            <p class="note-timeago">${item.status}</p>
+            <div class="dataId" data-id="${item.id}"></div>
         `;
 
-    // add div to the html
     notesList.appendChild(div);
   });
 };
@@ -114,37 +112,147 @@ try {
   console.log(error);
 }
 
+// console.log(notes.findNoteCategory('personal'));
+
+const addCategoryCss = () => {
+  document.querySelectorAll('.note-category').forEach((category) => {
+    if (category.textContent === 'personal') {
+      category.classList.add('category-personal');
+    }
+
+    if (category.textContent === 'work') {
+      category.classList.add('category-work');
+    }
+
+    if (category.textContent === 'exam') {
+      category.classList.add('category-exam');
+    }
+
+    if (category.textContent === 'hobby') {
+      category.classList.add('category-hobby');
+    }
+
+    if (category.textContent === 'info') {
+      category.classList.add('category-info');
+    }
+  });
+};
+
+addCategoryCss();
+
+const generateRandomID = () => {
+  return Math.floor(Math.random() * 1000);
+};
+
+const showDateWhenNoteWasCreated = () => {
+  const date = new Date();
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const formatDate = `${days[date.getDay()]}, ${
+    months[date.getMonth()]
+  } ${date.getDate()}, ${date.getFullYear()}`;
+
+  return formatDate;
+};
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   try {
-    notes.addNote(category.value, content.value, timeAgo);
+    notes.addNote(
+      generateRandomID(),
+      category.value,
+      content.value,
+      showDateWhenNoteWasCreated()
+    );
     renderNotes(notes.getAllNotes());
+    addCategoryCss();
+    updateNotePage();
+    removeNotePage();
   } catch (error) {
     console.error(error);
   }
 
-  resetFields();
+  resetInputsAddNote();
   toggleModalNote();
+  clickEventBtnSettings();
 });
 
-const resetFields = () => {
+const resetInputsAddNote = () => {
   category.value = '';
   content.value = '';
 };
 
-// add event to every btn
-const btnNoteSettings = document.querySelectorAll('.btn-settings');
-btnNoteSettings.forEach((btn) => {
-  btn.addEventListener('click', toggleNoteModalSettings);
-});
+const updateNoteUi = (event) => {
+  const newValue = event.currentTarget.textContent;
+  const id = event.currentTarget.parentElement.lastElementChild.dataset.id;
+
+  notes.updateNote(Number.parseInt(id, 10), newValue);
+};
+
+const updateNotePage = () => {
+  const updateNoteContent = document.querySelectorAll('.note-content');
+  updateNoteContent.forEach((note) => {
+    note.addEventListener('input', updateNoteUi);
+  });
+};
+
+updateNotePage();
+
+const removeNoteUi = (event) => {
+  const element = event.currentTarget.closest('.note-box-content');
+  const id = element.lastElementChild.dataset.id;
+
+  notes.removeNote(Number.parseInt(id, 10));
+
+  element.remove(element);
+  return false;
+};
+
+const removeNotePage = () => {
+  const removeNoteContent = document.querySelectorAll('.btn-note-remove');
+  removeNoteContent.forEach((note) => {
+    note.addEventListener('click', removeNoteUi);
+  });
+};
+
+removeNotePage();
+
+const clickEventBtnSettings = () => {
+  const btnNoteSettings = document.querySelectorAll('.btn-settings');
+  btnNoteSettings.forEach((btn) => {
+    btn.addEventListener('click', toggleNoteModalSettings);
+  });
+};
+
+clickEventBtnSettings();
 
 const btnAddNote = document.querySelector('#create-note');
 btnAddNote.addEventListener('click', toggleModalNote);
 
 const closeAddNote = document.querySelector('#btn-cancel');
-closeAddNote.addEventListener('click', () => {
-  toggleModalNote();
-});
+closeAddNote.addEventListener('click', toggleModalNote);
 
 const btnDarkMode = document.querySelector('#btn-dark-mode');
 btnDarkMode.addEventListener('click', toggleDarkMode);

@@ -8,6 +8,21 @@
   --bg-body-color: #f5f5f5;
   --bg-body-color-2: #e6eaed;
   --color-slate-gray: #aab3c2;
+
+  --personal-category-color: #e76f51;
+  --personal-category-bg: #fdf0ed;
+
+  --hobby-category-color: #f4a261;
+  --hobby-category-bg: #fef4ec;
+
+  --info-category-color: #e9c46a;
+  --info-category-bg: #fcf8ed;
+
+  --exam-category-color: #2a9d8f;
+  --exam-category-bg: #effbf9;
+
+  --work-category-color: #264653;
+  --work-category-bg: #f1f6f9;
 }
 
 html {
@@ -64,6 +79,7 @@ textarea {
 }
 
 .blur-gradient {
+  display: none;
   position: absolute;
   top: -200px;
   left: 25%;
@@ -124,8 +140,14 @@ textarea {
 }
 
 .h1 {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 400;
+}
+.h1-text-gradient {
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  color: transparent;
+  background: linear-gradient(90deg, #e9c46a, #e76f51);
 }
 
 .navbar-btns {
@@ -236,7 +258,7 @@ textarea {
   align-self: flex-end;
   border-radius: 5px;
   margin-left: 20px;
-  background-color: #9face6;
+  background-color: dodgerblue;
   color: var(--font-white);
   cursor: pointer;
   box-shadow: 0 10px 20px -5px var(--box-shadow-02);
@@ -320,14 +342,11 @@ textarea {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 8px 20px;
   transition: opacity 0.2s ease-in-out;
-  color: var(--font-white);
+  color: var(--font-dark);
   font-size: 14px;
   font-weight: 700;
-  background-color: #9face6;
-  border-radius: 5px;
-  box-shadow: 0 10px 20px -5px var(--box-shadow-02);
+  background-color: transparent;
 }
 
 .btn-create-note:hover,
@@ -339,7 +358,7 @@ textarea {
   margin-left: 20px;
 }
 .btn-dark-mode.active-dark-mode {
-  background-color: #74ebd5;
+  color: coral;
 }
 
 .btn-dark-mode svg {
@@ -496,8 +515,9 @@ textarea {
   border-radius: 5px;
   border: 1px solid var(--border-01);
   box-shadow: 0 10px 20px -5px var(--box-shadow-02);
-  break-inside: avoid;
   margin-bottom: 40px;
+  display: inline-block;
+  width: 100%;
 }
 .note-box-content.active {
   background-color: #212121;
@@ -511,9 +531,36 @@ textarea {
 
 .note-category {
   font-size: 12px;
-  color: var(--font-gray);
+  color: var(--exam-category-color);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  background: var(--exam-category-bg);
+  padding: 0px 5px;
+  border-radius: 4px;
+}
+
+.category-personal {
+  color: var(--personal-category-color);
+  background: var(--personal-category-bg);
+}
+
+.category-hobby {
+  color: var(--hobby-category-color);
+  background: var(--hobby-category-bg);
+}
+
+.category-info {
+  color: var(--info-category-color);
+  background: var(--info-category-bg);
+}
+
+.category-exam {
+  color: var(--exam-category-color);
+  background: var(--exam-category-bg);
+}
+
+.category-work {
+  color: var(--work-category-color);
+  background: var(--work-category-bg);
 }
 
 .btn-note-settings {
@@ -590,12 +637,21 @@ svg {
 
 .note-content {
   margin: 10px 0;
+  caret-color: dodgerblue;
+}
+[contenteditable]:focus {
+  outline: unset;
 }
 
 .note-timeago {
   color: var(--font-gray);
   font-size: 12px;
-  display: flex;
-  flex-grow: 1;
-  align-items: flex-end;
+}
+
+.footer-content {
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+.footer-content p {
+  color: var(--font-gray);
 }
