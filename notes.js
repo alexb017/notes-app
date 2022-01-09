@@ -4,6 +4,11 @@ export default class Note {
     this.category = category;
     this.content = content;
     this.status = status;
+    this.styles = {
+      heading: '',
+      bold: '',
+      italic: '',
+    };
   }
 
   getAllNotes() {
@@ -16,17 +21,6 @@ export default class Note {
     return notes;
   }
 
-  getID() {
-    const notes = this.getAllNotes();
-    let indexID;
-    notes.forEach((note, index) => {
-      console.log(index);
-      indexID = index;
-    });
-
-    return indexID;
-  }
-
   addNote(id, category, content, status) {
     const notes = this.getAllNotes();
 
@@ -35,6 +29,11 @@ export default class Note {
       category,
       content,
       status,
+      styles: {
+        heading: '',
+        bold: '',
+        italic: '',
+      },
     };
 
     notes.push(note);
@@ -65,9 +64,17 @@ export default class Note {
     localStorage.setItem('notes', JSON.stringify(notes));
   }
 
-  findNoteCategory(noteCategory) {
-    return this.getAllNotes().filter((note) => note.category === noteCategory);
-  }
+  addNoteStyles(id, heading, bold, italic) {
+    const notes = this.getAllNotes();
 
-  statusNote() {}
+    notes.forEach((note) => {
+      if (note.id === id) {
+        note.styles.heading = `font-size: ${heading};`;
+        note.styles.bold = `font-weight: ${bold};`;
+        note.styles.italic = `font-style: ${italic};`;
+      }
+    });
+
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }
 }

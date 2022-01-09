@@ -6,35 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notes App</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./index.css" />
   </head>
-  <body>
+  <body class="body">
     <div class="blur-gradient"></div>
     <nav class="navbar">
-      <div class="container">
+      <div class="navbar-container">
         <div class="navbar-content">
           <div class="navbar-title">
-            <h1 class="h1">
-              <span class="h1-text-gradient">
-                <strong>NotesApp</strong>
-              </span>
-            </h1>
+            <h1 class="title">NotesApp</h1>
+          </div>
+          <div class="note-search">
+            <form id="search-note" class="search-note">
+              <label for="search-input">
+                <div class="search-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.677 19.607L12.962 13.891C10.4196 15.6985 6.91642 15.2564 4.90285 12.8739C2.88929 10.4915 3.03714 6.96361 5.24298 4.75802C7.44824 2.55147 10.9765 2.40298 13.3594 4.41644C15.7422 6.42989 16.1846 9.93347 14.377 12.476L20.092 18.192L18.678 19.606L18.677 19.607ZM9.48498 5.00001C7.58868 4.99958 5.95267 6.3307 5.56745 8.18745C5.18224 10.0442 6.15369 11.9163 7.89366 12.6703C9.63362 13.4242 11.6639 12.8529 12.7552 11.3021C13.8466 9.75129 13.699 7.64734 12.402 6.26402L13.007 6.86402L12.325 6.18402L12.313 6.17202C11.5648 5.4192 10.5464 4.99715 9.48498 5.00001Z"
+                    ></path>
+                  </svg>
+                </div>
+              </label>
+              <input
+                type="text"
+                name="search"
+                class="search-input"
+                id="search-input"
+                placeholder="What are you looking for?"
+              />
+            </form>
           </div>
           <div class="navbar-btns">
-            <button id="create-note" class="btn-create-note btn-modal">
-              <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 20H17V17H14V15H17V12H19V15H22V17H19V20ZM12 17H2V15H12V17ZM15 13H2V11H15V13ZM15 9H2V7H15V9Z"></path>
-              </svg>                
+            <button id="btn-dark-mode" class="btn-dark-mode btn-modal">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM11.984 20H12V4C7.58172 3.99558 3.99642 7.57372 3.992 11.992C3.98758 16.4103 7.56572 19.9956 11.984 20Z"
+                ></path>
               </svg>
-              <span>Add Note</span>
+            </button>
+            <button id="create-note" class="btn-create-note btn-modal">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.41999 20.579C4.13948 20.5785 3.87206 20.4603 3.68299 20.253C3.49044 20.0475 3.39476 19.7695 3.41999 19.489L3.66499 16.795L14.983 5.48103L18.52 9.01703L7.20499 20.33L4.51099 20.575C4.47999 20.578 4.44899 20.579 4.41999 20.579ZM19.226 8.31003L15.69 4.77403L17.811 2.65303C17.9986 2.46525 18.2531 2.35974 18.5185 2.35974C18.7839 2.35974 19.0384 2.46525 19.226 2.65303L21.347 4.77403C21.5348 4.9616 21.6403 5.21612 21.6403 5.48153C21.6403 5.74694 21.5348 6.00146 21.347 6.18903L19.227 8.30903L19.226 8.31003Z"
+                ></path>
+              </svg>
+              <span>Create Note</span>
             </button>
             <div id="modal-add-note" class="modal-add-note">
-              <div class="modal-content">
-                <!-- <div class="close-modal">
+              <div id="modal-content" class="modal-content">
+                <div class="close-modal">
                   <button id="btn-close-modal" class="btn-close-modal">
                     <svg
                       width="24"
@@ -47,9 +85,9 @@
                       ></path>
                     </svg>
                   </button>
-                </div> -->
+                </div>
                 <div class="modal-add-note-title">
-                  <h1>Quick Note</h1>
+                  <h1 class="h1">Quick Note</h1>
                 </div>
                 <div class="modal-form">
                   <form id="add-note">
@@ -67,18 +105,9 @@
                     <textarea
                       name="note"
                       id="write-note"
-                      rows="4"
+                      rows="5"
                       placeholder="Write a note..."
                     ></textarea>
-                    <!-- <div class="add-note-date">
-                      <p class="p">Select date</p>
-                      <input
-                        type="date"
-                        name="timeAgo"
-                        id="date-timeAgo"
-                        value=""
-                      />
-                    </div> -->
                     <div class="add-note-btns">
                       <input
                         type="button"
@@ -88,7 +117,7 @@
                       />
                       <input
                         type="submit"
-                        value="Add note"
+                        value="Add new note"
                         class="btn-submit"
                       />
                     </div>
@@ -96,52 +125,10 @@
                 </div>
               </div>
             </div>
-            <button id="btn-dark-mode" class="btn-dark-mode btn-modal">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M18.248 16.9972C18.1656 16.9991 18.0829 17 18 17C11.9249 17 7 12.0751 7 5.99999C7 5.91709 7.00092 5.8344 7.00275 5.75192C5.17211 7.21851 4 9.47339 4 12C4 16.4182 7.58172 20 12 20C14.5266 20 16.7814 18.8279 18.248 16.9972ZM19.4661 14.8812C18.989 14.9593 18.4992 15 18 15C13.0294 15 9 10.9706 9 5.99999C9 5.50074 9.04065 5.01099 9.11882 4.53386C9.25094 3.72745 9.49024 2.9571 9.82162 2.23792C8.96026 2.42928 8.14073 2.73173 7.37882 3.12946C4.18215 4.79821 2 8.14425 2 12C2 17.5228 6.47715 22 12 22C15.8557 22 19.2017 19.8178 20.8705 16.6212C21.2682 15.8593 21.5707 15.0397 21.762 14.1784C21.0429 14.5098 20.2725 14.7491 19.4661 14.8812Z"
-                ></path>
-              </svg>
-              <span>Dark Mode</span>
-            </button>
           </div>
         </div>
       </div>
     </nav>
-    <div class="search">
-      <div class="container">
-        <div class="note-search">
-          <form id="search-note" class="search-note">
-            <div class="search-icon">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.677 19.607L12.962 13.891C10.4196 15.6985 6.91642 15.2564 4.90285 12.8739C2.88929 10.4915 3.03714 6.96361 5.24298 4.75802C7.44824 2.55147 10.9765 2.40298 13.3594 4.41644C15.7422 6.42989 16.1846 9.93347 14.377 12.476L20.092 18.192L18.678 19.606L18.677 19.607ZM9.48498 5.00001C7.58868 4.99958 5.95267 6.3307 5.56745 8.18745C5.18224 10.0442 6.15369 11.9163 7.89366 12.6703C9.63362 13.4242 11.6639 12.8529 12.7552 11.3021C13.8466 9.75129 13.699 7.64734 12.402 6.26402L13.007 6.86402L12.325 6.18402L12.313 6.17202C11.5648 5.4192 10.5464 4.99715 9.48498 5.00001Z"
-                ></path>
-              </svg>
-            </div>
-            <input
-              type="text"
-              name="search"
-              class="search-input"
-              id="search-input"
-              placeholder="What are you looking for?"
-            />
-          </form>
-        </div>
-      </div>
-    </div>
     <div class="notes">
       <div class="container">
         <div class="notes-content">
@@ -157,7 +144,7 @@
     <div class="footer">
       <div class="container">
         <div class="footer-content">
-          <p class="p">&copy; 2021 NotesApp.</p>
+          <p class="p">&copy; 2022 NotesApp.</p>
         </div>
       </div>
     </div>

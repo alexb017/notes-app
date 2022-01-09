@@ -3,6 +3,8 @@ import {
   toggleNoteModalSettings,
   toggleModalNote,
   toggleDarkMode,
+  closeModalWhenClickOutside,
+  closeModalSettingsWhenCLickOutside,
 } from './helpers.js';
 
 const form = document.querySelector('#add-note');
@@ -11,6 +13,8 @@ const content = document.querySelector('#write-note');
 const status = 'a while ago';
 
 const notesList = document.querySelector('#notes-list');
+const searchInput = document.querySelector('#search-input');
+const arrayGrid = ['left', 'center', 'right'];
 
 const renderNotes = (items) => {
   notesList.innerHTML = '';
@@ -18,9 +22,10 @@ const renderNotes = (items) => {
   items.forEach((item) => {
     const div = document.createElement('div');
     div.setAttribute('class', 'note-box-content');
+    div.setAttribute('data-id', `${item.id}`);
     div.innerHTML = `
             <div class="note-stuff">
-                <span class="note-category"><strong>${item.category}</strong></span>
+                <span class="note-category">${item.category}</span>
                 <div class="btn-note-settings">
                     <button class="btn-settings">
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -29,9 +34,7 @@ const renderNotes = (items) => {
                     </button>
                     <div class="note-modal-settings">
                         <div class="style-settings">
-                            <p class="p">style</p>
-                            <button class="paragraph style-bg">Default</button>
-                            <button class="heading-h1 style-bg">
+                            <button class="h1-style style-text-note">
                                 <svg
                                     width="24"
                                     height="24"
@@ -47,9 +50,8 @@ const renderNotes = (items) => {
                                     
                                     ></path>
                                 </svg>
-                                <span class="heading-h1-text">Heading h1</span>
                             </button>
-                            <button class="bold style-bg">
+                            <button class="bold-style style-text-note">
                                 <svg
                                     width="24"
                                     height="24"
@@ -60,9 +62,8 @@ const renderNotes = (items) => {
                                     d="M6 4H12.5C13.381 4.00004 14.2425 4.25865 14.9779 4.74378C15.7132 5.2289 16.29 5.9192 16.6367 6.72907C16.9834 7.53894 17.0847 8.43276 16.9282 9.29969C16.7716 10.1666 16.3641 10.9685 15.756 11.606C16.4386 12.0013 17.0053 12.5692 17.3992 13.2526C17.7931 13.9361 18.0003 14.7112 18 15.5C18 16.0909 17.8836 16.6761 17.6575 17.2221C17.4313 17.768 17.0998 18.2641 16.682 18.682C16.2641 19.0998 15.768 19.4313 15.2221 19.6575C14.6761 19.8836 14.0909 20 13.5 20H6V18H7V6H6V4ZM9 11H12.5C13.163 11 13.7989 10.7366 14.2678 10.2678C14.7366 9.79893 15 9.16304 15 8.5C15 7.83696 14.7366 7.20107 14.2678 6.73223C13.7989 6.26339 13.163 6 12.5 6H9V11ZM9 13V18H13.5C14.163 18 14.7989 17.7366 15.2678 17.2678C15.7366 16.7989 16 16.163 16 15.5C16 14.837 15.7366 14.2011 15.2678 13.7322C14.7989 13.2634 14.163 13 13.5 13H9Z"
                                     ></path>
                                 </svg>
-                                <span class="bold-text">Bold</span>
                             </button>
-                            <button class="italic style-bg">
+                            <button class="italic-style style-text-note">
                                 <svg
                                 width="24"
                                 height="24"
@@ -73,30 +74,20 @@ const renderNotes = (items) => {
                                     d="M13 20H7V18H8.927L13.043 6H11V4H17V6H15.073L10.957 18H13V20Z"
                                 ></path>
                                 </svg>
-                                <span class="italic-text">Italic</span>
                             </button>
                         </div>
-                        <div class="more-settings">
-                            <p class="p">more stuff</p>
-                            <button class="btn-note-update">
-                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4H8V6.55709C9.19001 5.622 10.6906 5.0643 12.3214 5.0643C16.1874 5.0643 19.3214 8.19831 19.3214 12.0643C19.3214 15.9303 16.1874 19.0643 12.3214 19.0643C10.171 19.0643 8.24696 18.0946 6.96289 16.5685L8.58221 15.3837C9.49811 16.4147 10.8339 17.0643 12.3214 17.0643C15.0829 17.0643 17.3214 14.8257 17.3214 12.0643C17.3214 9.30288 15.0829 7.0643 12.3214 7.0643C11.2346 7.0643 10.2288 7.41107 9.4085 8L12 8V10H6V4Z"></path>
-                                </svg>
-                                <span>Update</span>
-                            </button>
+                        <div class="more-settings"> 
                             <button class="btn-note-remove">
                                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17 22H7C5.89543 22 5 21.1046 5 20V7H3V5H7V4C7 2.89543 7.89543 2 9 2H15C16.1046 2 17 2.89543 17 4V5H21V7H19V20C19 21.1046 18.1046 22 17 22ZM7 7V20H17V7H7ZM9 4V5H15V4H9Z"></path>
                                 </svg>
-                                <span>Remove</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <p class="note-content" contenteditable="true">${item.content}</p>
+            <div class="note-content" style="${item.styles.heading} ${item.styles.bold} ${item.styles.italic}" contenteditable="true">${item.content}</div>
             <p class="note-timeago">${item.status}</p>
-            <div class="dataId" data-id="${item.id}"></div>
         `;
 
     notesList.appendChild(div);
@@ -104,6 +95,7 @@ const renderNotes = (items) => {
 };
 
 const notes = new Notes();
+//console.log(notes);
 
 // render on page load
 try {
@@ -112,10 +104,14 @@ try {
   console.log(error);
 }
 
-// console.log(notes.findNoteCategory('personal'));
+//console.log(notes.getAllNotes());
 
 const addCategoryCss = () => {
   document.querySelectorAll('.note-category').forEach((category) => {
+    if (category.textContent === '') {
+      category.innerHTML = '<strong>default</strong>';
+    }
+
     if (category.textContent === 'personal') {
       category.classList.add('category-personal');
     }
@@ -137,7 +133,6 @@ const addCategoryCss = () => {
     }
   });
 };
-
 addCategoryCss();
 
 const generateRandomID = () => {
@@ -156,18 +151,18 @@ const showDateWhenNoteWasCreated = () => {
     'Saturday',
   ];
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
     'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   const formatDate = `${days[date.getDay()]}, ${
@@ -197,6 +192,7 @@ form.addEventListener('submit', (event) => {
   resetInputsAddNote();
   toggleModalNote();
   clickEventBtnSettings();
+  clickEventBtnStyles();
 });
 
 const resetInputsAddNote = () => {
@@ -205,8 +201,9 @@ const resetInputsAddNote = () => {
 };
 
 const updateNoteUi = (event) => {
-  const newValue = event.currentTarget.textContent;
-  const id = event.currentTarget.parentElement.lastElementChild.dataset.id;
+  const element = event.currentTarget;
+  const id = element.parentElement.dataset.id;
+  const newValue = element.textContent;
 
   notes.updateNote(Number.parseInt(id, 10), newValue);
 };
@@ -217,17 +214,16 @@ const updateNotePage = () => {
     note.addEventListener('input', updateNoteUi);
   });
 };
-
 updateNotePage();
 
 const removeNoteUi = (event) => {
-  const element = event.currentTarget.closest('.note-box-content');
-  const id = element.lastElementChild.dataset.id;
+  const element = event.currentTarget;
+  const noteBox = element.closest('.note-box-content');
+  const id = noteBox.dataset.id;
 
   notes.removeNote(Number.parseInt(id, 10));
 
-  element.remove(element);
-  return false;
+  noteBox.remove(noteBox);
 };
 
 const removeNotePage = () => {
@@ -236,8 +232,27 @@ const removeNotePage = () => {
     note.addEventListener('click', removeNoteUi);
   });
 };
-
 removeNotePage();
+
+const searchNote = (textInput) => {
+  const notesHTML = document.querySelectorAll('.note-content');
+  const notesHTMLArray = [...notesHTML];
+
+  notesHTMLArray.filter((item) => {
+    const content = item.textContent.toLowerCase();
+    const contentInput = textInput.toLowerCase();
+
+    if (content.includes(contentInput)) {
+      item.parentElement.classList.remove('hide');
+    } else {
+      item.parentElement.classList.add('hide');
+    }
+  });
+};
+
+searchInput.addEventListener('keyup', () => {
+  searchNote(searchInput.value);
+});
 
 const clickEventBtnSettings = () => {
   const btnNoteSettings = document.querySelectorAll('.btn-settings');
@@ -245,8 +260,87 @@ const clickEventBtnSettings = () => {
     btn.addEventListener('click', toggleNoteModalSettings);
   });
 };
-
 clickEventBtnSettings();
+
+const clickEventBtnStyles = () => {
+  const buttons = document.querySelectorAll('.style-text-note');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      const element = event.currentTarget;
+      const elementParent = element.closest('.note-box-content');
+      const content = elementParent.children[1];
+
+      if (element.classList.contains('h1-style')) {
+        if (element.classList.contains('active')) {
+          element.classList.remove('active');
+          content.style.fontSize = '16px';
+        } else {
+          element.classList.add('active');
+          content.style.fontSize = '21px';
+        }
+      }
+
+      if (element.classList.contains('bold-style')) {
+        if (element.classList.contains('active')) {
+          element.classList.remove('active');
+          content.style.fontWeight = '400';
+        } else {
+          element.classList.add('active');
+          content.style.fontWeight = '700';
+        }
+      }
+
+      if (element.classList.contains('italic-style')) {
+        if (element.classList.contains('active')) {
+          element.classList.remove('active');
+          content.style.fontStyle = 'normal';
+        } else {
+          element.classList.add('active');
+          content.style.fontStyle = 'italic';
+        }
+      }
+
+      const id = elementParent.dataset.id;
+
+      notes.addNoteStyles(
+        Number.parseInt(id, 10),
+        content.style.fontSize,
+        content.style.fontWeight,
+        content.style.fontStyle
+      );
+    });
+  });
+};
+clickEventBtnStyles();
+
+const addActiveStyles = () => {
+  const buttons = document.querySelectorAll('.style-text-note');
+  buttons.forEach((btn) => {
+    const contentStyle = btn.closest('.note-box-content').children[1].style;
+
+    if (
+      btn.classList.contains('h1-style') &&
+      contentStyle.fontSize === '21px'
+    ) {
+      btn.classList.add('active');
+    }
+
+    if (
+      btn.classList.contains('bold-style') &&
+      contentStyle.fontWeight === '700'
+    ) {
+      btn.classList.add('active');
+    }
+
+    if (
+      btn.classList.contains('italic-style') &&
+      contentStyle.fontStyle === 'italic'
+    ) {
+      btn.classList.add('active');
+    }
+  });
+};
+addActiveStyles();
 
 const btnAddNote = document.querySelector('#create-note');
 btnAddNote.addEventListener('click', toggleModalNote);
@@ -254,5 +348,38 @@ btnAddNote.addEventListener('click', toggleModalNote);
 const closeAddNote = document.querySelector('#btn-cancel');
 closeAddNote.addEventListener('click', toggleModalNote);
 
+const closeByPressingX = document.querySelector('#btn-close-modal');
+closeByPressingX.addEventListener('click', toggleModalNote);
+
 const btnDarkMode = document.querySelector('#btn-dark-mode');
 btnDarkMode.addEventListener('click', toggleDarkMode);
+
+document.addEventListener('keyup', (event) => {
+  const key = event.key;
+  const modal = document.querySelector('#modal-add-note');
+
+  if (key === 'Escape' && modal.classList.contains('active-modal')) {
+    toggleModalNote();
+  }
+});
+
+// document.addEventListener('click', (event) => {
+//   document.querySelectorAll('.note-modal-settings').forEach((item) => {
+//     const btn = item.previousElementSibling;
+//     if (btn.classList.contains('active') && item.classList.contains('active')) {
+//       console.log(item);
+//       return;
+//     }
+//   });
+// });
+
+closeModalWhenClickOutside();
+// closeModalSettingsWhenCLickOutside();
+
+/*  <div class="style-refresh">
+      <button class="refresh">
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 4H8V6.55709C9.19001 5.622 10.6906 5.0643 12.3214 5.0643C16.1874 5.0643 19.3214 8.19831 19.3214 12.0643C19.3214 15.9303 16.1874 19.0643 12.3214 19.0643C10.171 19.0643 8.24696 18.0946 6.96289 16.5685L8.58221 15.3837C9.49811 16.4147 10.8339 17.0643 12.3214 17.0643C15.0829 17.0643 17.3214 14.8257 17.3214 12.0643C17.3214 9.30288 15.0829 7.0643 12.3214 7.0643C11.2346 7.0643 10.2288 7.41107 9.4085 8L12 8V10H6V4Z"></path>
+        </svg>                                                       
+      </button>
+    </div> */
