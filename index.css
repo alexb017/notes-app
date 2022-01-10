@@ -5,11 +5,14 @@
   --light-dark-color: #666666;
   --navbar-background-color: #f5deb3;
   --textarea-background-color-opacity-03: rgba(245, 222, 179, 0.3);
+  --input-text-color: #808080;
   --input-background-color: #f5f5f5;
+  --icon-remove-note: #ffffff;
   --border-color: #eeeeee;
   --box-background-color: #ffffff;
+  --note-modal-settings: #ffffff;
   --box-shadow-opacity-07: rgba(0, 0, 0, 0.07);
-  --modal-background-opacity-7: rgba(0, 0, 0, 0.2);
+  --modal-background-opacity-2: rgba(0, 0, 0, 0.35);
   --personal-category-background-color: 162, 211, 155;
   --hobby-category-background-color: 206, 180, 255;
   --info-category-background-color: 98, 208, 221;
@@ -20,6 +23,13 @@
     0 2px 4px var(--box-shadow-opacity-07),
     0 4px 8px var(--box-shadow-opacity-07),
     0 8px 16px var(--box-shadow-opacity-07);
+
+  --shadow-2: 0 1px 2px var(--box-shadow-opacity-07),
+    0 2px 4px var(--box-shadow-opacity-07),
+    0 4px 8px var(--box-shadow-opacity-07),
+    0 8px 16px var(--box-shadow-opacity-07),
+    0 16px 32px var(--box-shadow-opacity-07),
+    0 32px 64px var(--box-shadow-opacity-07);
 }
 
 body {
@@ -42,13 +52,15 @@ body {
   box-sizing: border-box;
 }
 
-html.dark {
+.dark {
   --white-color: #212121;
   --dark-color: #ffffff;
   --light-dark-color: #d5d5d5;
   --box-background-color: #333333;
-  --input-background-color: #333333;
-  --border-color: #333333;
+  --input-background-color: #444444;
+  --border-color: #444444;
+  --note-modal-settings: #666666;
+  --input-text-color: #ffffff;
 }
 
 button {
@@ -153,7 +165,7 @@ svg {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--modal-background-opacity-7);
+  background-color: var(--modal-background-opacity-2);
   z-index: 1;
 }
 .modal-add-note.active-modal {
@@ -204,7 +216,8 @@ svg {
   display: flex;
   flex-direction: column;
 }
-.add-note-category {
+.add-note-category,
+.add-note-btns {
   background: var(--input-background-color);
   border-radius: 8px;
   padding: 10px 20px;
@@ -248,8 +261,8 @@ svg {
   font-size: 14px;
   font-weight: 700;
   border-radius: 8px;
-  background-color: var(--white-color);
-  color: var(--dark-color);
+  background-color: var(--dark-color);
+  color: var(--white-color);
   cursor: pointer;
   transition: opacity 0.2s ease-in-out;
   box-shadow: var(--shadow);
@@ -298,7 +311,7 @@ svg {
 }
 
 .search-icon {
-  color: var(--gray-color);
+  color: var(--input-text-color);
   width: 20px;
   height: 20px;
   margin-right: 10px;
@@ -309,14 +322,14 @@ svg {
   width: 100%;
   outline: none;
   border: 0;
-  color: var(--gray-color);
-  caret-color: var(--gray-color);
+  color: var(--input-text-color);
+  caret-color: var(--input-text-color);
   font-size: 14px;
   transition: border 0.2s ease-in-out;
 }
 
 .search-input::placeholder {
-  color: var(--gray-color);
+  color: var(--input-text-color);
   opacity: 1;
 }
 
@@ -362,13 +375,12 @@ svg {
     margin-right: 35px;
   }
 }
-
+.btn-dark-mode span {
+  margin-left: 5px;
+  font-weight: 500;
+}
 .btn-dark-mode.active-dark-mode {
   color: rgb(var(--work-category-background-color));
-}
-
-.btn-dark-mode svg {
-  transform: rotate(-140deg);
 }
 
 /* notes list --- */
@@ -396,7 +408,7 @@ svg {
     column-count: 2;
   }
 }
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1440px) {
   .notes-list {
     column-count: 3;
   }
@@ -481,9 +493,9 @@ svg {
   position: absolute;
   top: 24px;
   right: 0;
-  background-color: var(--box-background-color);
-  box-shadow: var(--shadow);
-  border-radius: 4px;
+  background-color: var(--note-modal-settings);
+  box-shadow: var(--shadow-2);
+  border-radius: 5px;
   z-index: 1;
   display: flex;
   flex-direction: row;
@@ -498,41 +510,33 @@ svg {
   opacity: 1;
   visibility: visible;
 }
+.note-modal-settings.dark-mode {
+  background-color: #666666;
+}
 
 .style-refresh,
 .style-settings {
-  border-right: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  padding: 6px;
-}
-
-.style-text-note-default {
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-  padding: 4px;
 }
 
 .refresh,
 .style-text-note {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 100%;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
   color: var(--dark-color);
-  padding: 4px;
-  margin: 0 2px;
+  padding: 8px;
   display: flex;
   align-items: center;
 }
 
 .style-text-note.active {
-  background-color: var(--border-color);
-  border-radius: 4px;
+  color: rgb(var(--exam-category-background-color));
 }
 
 .more-settings {
-  padding: 6px;
   display: flex;
   align-items: center;
 }
@@ -541,18 +545,22 @@ svg {
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 26px;
-  height: 26px;
+  width: 36px;
+  height: 100%;
   transition: background 0.2s ease-in-out;
-  color: rgb(var(--exam-category-background-color));
-  padding: 4px;
+  background: rgb(var(--exam-category-background-color));
+  color: var(--icon-remove-note);
+  padding: 8px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
-.refresh:hover,
-.style-text-note:hover,
-.btn-note-remove:hover {
+.style-text-note:hover {
   background-color: var(--border-color);
-  border-radius: 4px;
+}
+.style-text-note:first-child:hover {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .note-content {
@@ -564,8 +572,8 @@ svg {
   outline: unset;
 }
 
-.h1 {
-  font-size: 20px;
+.heading-h1 {
+  font-size: 21px;
 }
 
 .bold {

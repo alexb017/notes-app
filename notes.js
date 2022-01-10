@@ -8,6 +8,7 @@ export default class Note {
       heading: '',
       bold: '',
       italic: '',
+      color: '',
     };
   }
 
@@ -24,16 +25,14 @@ export default class Note {
   addNote(id, category, content, status) {
     const notes = this.getAllNotes();
 
+    const styles = this.styles;
+
     const note = {
       id,
       category,
       content,
       status,
-      styles: {
-        heading: '',
-        bold: '',
-        italic: '',
-      },
+      styles,
     };
 
     notes.push(note);
@@ -64,7 +63,7 @@ export default class Note {
     localStorage.setItem('notes', JSON.stringify(notes));
   }
 
-  addNoteStyles(id, heading, bold, italic) {
+  addNoteStyles(id, heading, bold, italic, color) {
     const notes = this.getAllNotes();
 
     notes.forEach((note) => {
@@ -72,6 +71,7 @@ export default class Note {
         note.styles.heading = `font-size: ${heading};`;
         note.styles.bold = `font-weight: ${bold};`;
         note.styles.italic = `font-style: ${italic};`;
+        note.styles.color = `color: ${color};`;
       }
     });
 
