@@ -68,10 +68,29 @@ export default class Note {
 
     notes.forEach((note) => {
       if (note.id === id) {
-        note.styles.heading = `font-size: ${heading};`;
-        note.styles.bold = `font-weight: ${bold};`;
-        note.styles.italic = `font-style: ${italic};`;
-        note.styles.color = `color: ${color};`;
+        if (heading === '') {
+          note.styles.heading = '';
+        } else {
+          note.styles.heading = `font-size: ${heading};`;
+        }
+
+        if (bold === '') {
+          note.styles.bold = '';
+        } else {
+          note.styles.bold = `font-weight: ${bold};`;
+        }
+
+        if (italic === '') {
+          note.styles.italic = '';
+        } else {
+          note.styles.italic = `font-style: ${italic};`;
+        }
+
+        if (color === '') {
+          note.styles.color = '';
+        } else {
+          note.styles.color = `color: ${color};`;
+        }
       }
     });
 

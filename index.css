@@ -478,7 +478,7 @@ svg {
   color: var(--gray-color);
   transition: all 0.2s ease-in-out;
 }
-.btn-settings.active {
+.btn-settings:focu {
   background-color: var(--border-color);
   border-radius: 4px;
 }
@@ -486,7 +486,18 @@ svg {
   background-color: var(--border-color);
   border-radius: 4px;
 }
-
+.bg-modal-event {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+.bg-modal-event.active {
+  display: block;
+}
 .note-modal-settings {
   opacity: 0;
   visibility: hidden;
@@ -507,6 +518,10 @@ svg {
   }
 }
 .note-modal-settings.active {
+  opacity: 1;
+  visibility: visible;
+}
+.btn-note-settings:focus-withi .note-modal-settings {
   opacity: 1;
   visibility: visible;
 }

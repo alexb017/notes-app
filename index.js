@@ -4,17 +4,16 @@ import {
   toggleModalNote,
   toggleDarkMode,
   closeModalWhenClickOutside,
-  closeModalSettingsWhenCLickOutside,
+  switchToLightModeBtn,
+  switchToDarkModeBtn,
+  closeNoteModalSettingsWhenClickOutside,
 } from './helpers.js';
 
 const form = document.querySelector('#add-note');
 const category = document.querySelector('#note-category');
 const content = document.querySelector('#write-note');
-const status = 'a while ago';
-
 const notesList = document.querySelector('#notes-list');
 const searchInput = document.querySelector('#search-input');
-const arrayGrid = ['left', 'center', 'right'];
 
 const renderNotes = (items) => {
   notesList.innerHTML = '';
@@ -37,6 +36,7 @@ const renderNotes = (items) => {
                              13.4142C7.03914 13.7893 6.53043 14 6 14Z"></path>
                         </svg>
                     </button>
+                    <div class="bg-modal-event"></div>
                     <div class="note-modal-settings">
                         <div class="style-settings">
                             <button class="h1-style style-text-note">
@@ -140,7 +140,6 @@ const renderNotes = (items) => {
 };
 
 const notes = new Notes();
-//console.log(notes);
 
 // render on page load
 try {
@@ -148,8 +147,6 @@ try {
 } catch (error) {
   console.log(error);
 }
-
-console.log(notes.getAllNotes());
 
 const addCategoryCss = () => {
   document.querySelectorAll('.note-category').forEach((category) => {
@@ -318,7 +315,7 @@ const clickEventBtnStyles = () => {
       if (element.classList.contains('h1-style')) {
         if (element.classList.contains('active')) {
           element.classList.remove('active');
-          content.style.fontSize = '16px';
+          content.style.fontSize = '';
         } else {
           element.classList.add('active');
           content.style.fontSize = '21px';
@@ -328,7 +325,7 @@ const clickEventBtnStyles = () => {
       if (element.classList.contains('bold-style')) {
         if (element.classList.contains('active')) {
           element.classList.remove('active');
-          content.style.fontWeight = '400';
+          content.style.fontWeight = '';
         } else {
           element.classList.add('active');
           content.style.fontWeight = '700';
@@ -338,7 +335,7 @@ const clickEventBtnStyles = () => {
       if (element.classList.contains('italic-style')) {
         if (element.classList.contains('active')) {
           element.classList.remove('active');
-          content.style.fontStyle = 'normal';
+          content.style.fontStyle = '';
         } else {
           element.classList.add('active');
           content.style.fontStyle = 'italic';
@@ -415,9 +412,13 @@ const closeByPressingX = document.querySelector('#btn-close-modal');
 closeByPressingX.addEventListener('click', toggleModalNote);
 
 const theme = localStorage.getItem('theme');
+const btnDarkModeIcon = document.querySelector('.btn-dark-mode');
 
 if (theme) {
   document.body.classList.add(theme);
+  switchToLightModeBtn(btnDarkModeIcon);
+} else {
+  switchToDarkModeBtn(btnDarkModeIcon);
 }
 
 const btnDarkMode = document.querySelector('#btn-dark-mode');
@@ -432,15 +433,5 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
-// document.addEventListener('click', (event) => {
-//   document.querySelectorAll('.note-modal-settings').forEach((item) => {
-//     const btn = item.previousElementSibling;
-//     if (btn.classList.contains('active') && item.classList.contains('active')) {
-//       console.log(item);
-//       return;
-//     }
-//   });
-// });
-
 closeModalWhenClickOutside();
-// closeModalSettingsWhenCLickOutside();
+closeNoteModalSettingsWhenClickOutside();

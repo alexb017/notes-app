@@ -18,30 +18,30 @@ export const closeModalWhenClickOutside = () => {
 
 export const toggleNoteModalSettings = (event) => {
   const element = event.currentTarget;
-  const dropdown = element.parentElement.lastElementChild;
+  const modal = element.parentElement.lastElementChild;
+  const bg = element.parentElement.children[1];
 
-  if (element) {
-    element.classList.toggle('active');
-    dropdown.classList.toggle('active');
+  if (modal) {
+    modal.classList.add('active');
+    bg.classList.add('active');
   }
 };
 
-export const closeModalSettingsWhenCLickOutside = () => {
-  window.addEventListener('click', (event) => {
-    document.querySelectorAll('.note-modal-settings').forEach((btn) => {
-      if (btn.classList.contains('active')) {
-        console.log('event.target');
+export const closeNoteModalSettingsWhenClickOutside = () => {
+  const overlay = document.querySelectorAll('.bg-modal-event');
+
+  overlay.forEach((o) => {
+    o.addEventListener('click', (event) => {
+      if (event.currentTarget === event.target) {
+        event.currentTarget.classList.remove('active');
+        event.currentTarget.nextElementSibling.classList.remove('active');
       }
     });
   });
 };
 
-export const toggleDarkMode = (event) => {
-  document.body.classList.toggle('dark');
-
-  if (document.body.classList.contains('dark')) {
-    localStorage.setItem('theme', 'dark');
-    event.currentTarget.innerHTML = `
+export const switchToLightModeBtn = (e) => {
+  e.innerHTML = `
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12.998 22H10.998V19H12.998V22ZM18.362 19.778L16.241 17.657L17.655 16.243L19.777 
         18.365L18.364 19.778H18.362ZM5.63405 19.778L4.21905 18.364L6.33905 16.242L7.75405 
@@ -57,10 +57,11 @@ export const toggleDarkMode = (event) => {
       </svg>
       <span>Switch to light mode</span>  
     `;
-  } else {
-    localStorage.setItem('theme', '');
-    event.currentTarget.innerHTML = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+};
+
+export const switchToDarkModeBtn = (e) => {
+  e.innerHTML = `
+      <svg style="transform: rotate(-90deg);" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M18.248 16.9972C18.1656 16.9991 18.0829 17 
         18 17C11.9249 17 7 12.0751 7 5.99999C7 5.91709 7.00092 5.8344 7.00275 5.75192C5.17211 
         7.21851 4 9.47339 4 12C4 16.4182 7.58172 20 12 20C14.5266 20 16.7814 18.8279 18.248 
@@ -73,5 +74,16 @@ export const toggleDarkMode = (event) => {
       </svg>
       <span>Switch to dark mode</span>
     `;
+};
+
+export const toggleDarkMode = (event) => {
+  document.body.classList.toggle('dark');
+
+  if (document.body.classList.contains('dark')) {
+    localStorage.setItem('theme', 'dark');
+    switchToLightModeBtn(event.currentTarget);
+  } else {
+    localStorage.setItem('theme', '');
+    switchToDarkModeBtn(event.currentTarget);
   }
 };
